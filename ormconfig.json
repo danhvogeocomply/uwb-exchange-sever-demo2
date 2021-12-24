@@ -1,0 +1,9 @@
+{
+    "type": "mysql",
+    "host": "localhost",
+    "port": 23306,
+    "username": "root",
+    "password": "root",
+    "database": "uwb_exchange_server_db",
+    "synchronize": true
+}
