@@ -1,27 +1,24 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ClientProxy, MqttRecordBuilder } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
-import { firstValueFrom } from 'rxjs';
 import { AccessoriesService } from 'src/accessories/accessories.service';
-import { TOPIC, UwMqttbBroker } from 'src/core/configs';
+import { TOPIC } from 'src/core/configs';
+import { MqttService } from 'src/mqtt/mqtt.service';
 import { Repository } from 'typeorm';
 import { CreateSessionDto } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
-import { Client, ClientStatus, Session } from './entities/session.entity';
+import { ClientName, ClientStatus, Session } from './entities/session.entity';
 
 @Injectable()
 export class SessionsService {
   constructor(
     @InjectRepository(Session)
     private sessionsRepository: Repository<Session>,
-
     private accessoriesService: AccessoriesService,
-    @Inject(UwMqttbBroker.name) private readonly client: ClientProxy,
+    private mqttService: MqttService,
   ) {}
 
   async create(createSessionDto: CreateSessionDto) {
@@ -29,8 +26,8 @@ export class SessionsService {
     record.ascd = createSessionDto.ascd;
     record.phoneName = createSessionDto.phoneName;
     record.status = {
-      [Client.ACCESSORY]: ClientStatus.INITIAL,
-      [Client.MOBILE]: ClientStatus.INITIAL,
+      [ClientName.ACCESSORY]: ClientStatus.INITIAL,
+      [ClientName.MOBILE]: ClientStatus.INITIAL,
     };
 
     const accessory = await this.accessoriesService.findOne(
@@ -41,17 +38,8 @@ export class SessionsService {
       throw new BadRequestException('Invalid accessory id');
     }
     record.accessory = accessory;
-    await this.pushEventSessionCreated(record);
+    await this.mqttService.publish(TOPIC.SESSION, record, { qos: 1 });
     return this.sessionsRepository.save(record);
-  }
-
-  private pushEventSessionCreated(data: Session) {
-    const userProperties = { 'x-version': '1.0.0' };
-    const record = new MqttRecordBuilder(data)
-      .setProperties({ userProperties })
-      .setQoS(1)
-      .build();
-    return firstValueFrom(this.client.send(TOPIC.SESSION, record));
   }
 
   async findOne(id: number) {

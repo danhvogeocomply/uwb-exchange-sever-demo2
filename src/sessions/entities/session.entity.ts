@@ -16,7 +16,7 @@ export enum ClientStatus {
   STOPPED = 'stopped',
 }
 
-export enum Client {
+export enum ClientName {
   MOBILE = 'mobile',
   ACCESSORY = 'accessory',
 }
@@ -40,8 +40,8 @@ export class Session {
 
   @Column('simple-json')
   status: {
-    [Client.MOBILE]: ClientStatus;
-    [Client.ACCESSORY]: ClientStatus;
+    [ClientName.MOBILE]: ClientStatus;
+    [ClientName.ACCESSORY]: ClientStatus;
   };
 
   @CreateDateColumn()
