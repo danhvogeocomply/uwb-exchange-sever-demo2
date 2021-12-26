@@ -8,6 +8,6 @@ import { Accessory } from './entities/accessory.entity';
   imports: [TypeOrmModule.forFeature([Accessory])],
   controllers: [AccessoriesController],
   providers: [AccessoriesService],
-  exports: [TypeOrmModule],
+  exports: [AccessoriesService],
 })
 export class AccessoriesModule {}

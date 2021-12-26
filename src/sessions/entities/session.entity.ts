@@ -40,8 +40,8 @@ export class Session {
 
   @Column('simple-json')
   status: {
-    from: Client;
-    status: ClientStatus;
+    [Client.MOBILE]: ClientStatus;
+    [Client.ACCESSORY]: ClientStatus;
   };
 
   @CreateDateColumn()

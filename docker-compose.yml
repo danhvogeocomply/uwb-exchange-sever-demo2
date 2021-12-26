@@ -1,6 +1,12 @@
 version: "3"
 
 services:
+  hivemq:
+    image: hivemq/hivemq4
+    container_name: uwb_mqtt
+    ports:
+      - 28080:8080
+      - 21883:1883
   mysql:
     image: mysql:8
     restart: always
