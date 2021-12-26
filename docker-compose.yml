@@ -5,8 +5,14 @@ services:
     image: hivemq/hivemq4
     container_name: uwb_mqtt
     ports:
+      # the Control Center
       - 28080:8080
+
+      # MQTT
       - 21883:1883
+
+      # Web socket
+      - 28000:8000
   mysql:
     image: mysql:8
     restart: always
