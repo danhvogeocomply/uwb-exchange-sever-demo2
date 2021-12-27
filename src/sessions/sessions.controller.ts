@@ -8,15 +8,36 @@ import {
   Put,
 } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
-import { CreateSessionDto } from './dto/create-session.dto';
+import {
+  CreateSessionDto,
+  CreateSessionResponseDto,
+} from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ClientName } from './entities/session.entity';
+
+@ApiTags('sessions')
 @Controller('sessions')
 export class SessionsController {
   constructor(private readonly sessionsService: SessionsService) {}
 
   @Post()
-  create(@Body() createSessionDto: CreateSessionDto) {
-    return this.sessionsService.create(createSessionDto);
+  @ApiCreatedResponse({
+    description: 'Create session successfully.',
+    type: CreateSessionResponseDto,
+  })
+  async create(
+    @Body() createSessionDto: CreateSessionDto,
+  ): Promise<CreateSessionResponseDto> {
+    const { status, id } = await this.sessionsService.create(createSessionDto);
+    return {
+      msg: 'create success',
+      id,
+      status: {
+        [ClientName.MOBILE]: status[ClientName.MOBILE],
+        [ClientName.ACCESSORY]: status[ClientName.ACCESSORY],
+      },
+    };
   }
 
   @Get(':id')
@@ -43,12 +64,14 @@ export class SessionsController {
   }
 
   @Delete()
+  @ApiOperation({ summary: 'Delete all sessions' })
   async removeAll() {
     await this.sessionsService.removeAll();
     return { msg: `all sessions deleted` };
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a session by ID' })
   async remove(@Param('id') id: string) {
     await this.sessionsService.remove(+id);
     return { msg: `session deleted with id = ${id}` };

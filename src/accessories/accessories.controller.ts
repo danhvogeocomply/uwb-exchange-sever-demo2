@@ -7,7 +7,7 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AccessoriesService } from './accessories.service';
 import {
   CreateAccessoryDto,
@@ -22,7 +22,10 @@ export class AccessoriesController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new accessory' })
-  @ApiResponse({ status: 201, description: 'Create accessory successfully.' })
+  @ApiCreatedResponse({
+    description: 'Create accessory successfully.',
+    type: CreateAccessoryResponseDto,
+  })
   async create(
     @Body() createAccessoryDto: CreateAccessoryDto,
   ): Promise<CreateAccessoryResponseDto> {
