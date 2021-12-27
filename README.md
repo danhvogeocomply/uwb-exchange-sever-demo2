@@ -44,6 +44,13 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
+### Explore HiveMQ Dashborad
+1. Access to endpoint: http://localhost:28080
+2. You can login with the default credentials:
+```bash
+User: admin
+Password: hivemq
+```
 ## Test
 
 ```bash
