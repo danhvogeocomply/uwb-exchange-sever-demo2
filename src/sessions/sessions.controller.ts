@@ -17,10 +17,12 @@ import {
   ApiCreatedResponse,
   ApiFoundResponse,
   ApiOperation,
+  ApiResponseProperty,
   ApiTags,
 } from '@nestjs/swagger';
 import { ClientName } from './entities/session.entity';
 import { FindSessionByIdDto } from './dto/find-session-by-id.dto';
+import { DeleteAllSessionsResponseDto } from './dto/delete-all-sessions.dto';
 
 @ApiTags('sessions')
 @Controller('sessions')
@@ -72,7 +74,8 @@ export class SessionsController {
 
   @Delete()
   @ApiOperation({ summary: 'Delete all sessions' })
-  async removeAll() {
+  @ApiResponseProperty({ type: DeleteAllSessionsResponseDto })
+  async removeAll(): Promise<DeleteAllSessionsResponseDto> {
     await this.sessionsService.removeAll();
     return { msg: `all sessions deleted` };
   }
