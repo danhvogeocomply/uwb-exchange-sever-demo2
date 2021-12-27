@@ -21,7 +21,7 @@ export class SessionsService {
     private mqttService: MqttService,
   ) {}
 
-  async create(createSessionDto: CreateSessionDto) {
+  async create(createSessionDto: CreateSessionDto): Promise<Session> {
     const record = new Session();
     record.ascd = createSessionDto.ascd;
     record.phoneName = createSessionDto.phoneName;
@@ -38,11 +38,16 @@ export class SessionsService {
       throw new BadRequestException('Invalid accessory id');
     }
     record.accessory = accessory;
-    await this.mqttService.publish(TOPIC.SESSION, record, { qos: 1 });
-    return this.sessionsRepository.save(record);
+    await this.sessionsRepository.save(record);
+    await this.mqttService.publish(
+      TOPIC.SESSION,
+      { type: 'session-created', data: record },
+      { qos: 1 },
+    );
+    return record;
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Session> {
     const session = await this.sessionsRepository.findOne(id, {
       relations: ['accessory'],
     });
@@ -63,13 +68,28 @@ export class SessionsService {
       },
     };
     await this.sessionsRepository.update(id, data);
+    await this.mqttService.publish(
+      TOPIC.SESSION,
+      { type: 'session-updated', data },
+      { qos: 1 },
+    );
   }
 
   async remove(id: number) {
     await this.sessionsRepository.delete(id);
+    await this.mqttService.publish(
+      TOPIC.SESSION,
+      { type: 'session-deleted', id },
+      { qos: 1 },
+    );
   }
 
   async removeAll() {
     await this.sessionsRepository.clear();
+    await this.mqttService.publish(
+      TOPIC.SESSION,
+      { type: 'deleted-all-sessions' },
+      { qos: 1 },
+    );
   }
 }
