@@ -7,12 +7,18 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiFoundResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { AccessoriesService } from './accessories.service';
 import {
   CreateAccessoryDto,
   CreateAccessoryResponseDto,
 } from './dto/create-accessory.dto';
+import { FindAllAccessoriesDto } from './dto/find-all-accessories.dto';
 import { UpdateAccessoryDto } from './dto/update-accessory.dto';
 
 @ApiTags('accessories')
@@ -38,7 +44,10 @@ export class AccessoriesController {
 
   @Get()
   @ApiOperation({ summary: 'Find an accessory' })
-  async findAll() {
+  @ApiFoundResponse({
+    type: FindAllAccessoriesDto,
+  })
+  async findAll(): Promise<FindAllAccessoriesDto> {
     const accessories = await this.accessoriesService.findAll();
     return {
       accessories,

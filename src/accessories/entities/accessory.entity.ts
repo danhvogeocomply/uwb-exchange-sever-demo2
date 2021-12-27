@@ -4,6 +4,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Accessory {
   @PrimaryGeneratedColumn()
+  @ApiProperty({ example: 1 })
   id: number;
 
   @Column()
@@ -14,5 +15,6 @@ export class Accessory {
   macAddress: string;
 
   @Column()
+  @ApiProperty()
   acd: string;
 }

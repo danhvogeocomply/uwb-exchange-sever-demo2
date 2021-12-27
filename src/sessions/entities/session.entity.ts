@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 import { Accessory } from 'src/accessories/entities/accessory.entity';
 import {
   Column,
@@ -8,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { SessionStatusDto } from '../dto/create-session.dto';
 
 export enum ClientStatus {
   INITIAL = 'initial',
@@ -24,12 +27,15 @@ export enum ClientName {
 @Entity()
 export class Session {
   @PrimaryGeneratedColumn()
+  @ApiProperty({ example: 1 })
   id: number;
 
   @Column()
   ascd: string;
 
   @Column()
+  @IsString()
+  @ApiProperty()
   phoneName: string;
 
   @ManyToOne(() => Accessory)
@@ -37,14 +43,17 @@ export class Session {
   accessory: Accessory;
 
   @Column('simple-json')
+  @ApiProperty({ type: SessionStatusDto })
   status: {
     [ClientName.MOBILE]: ClientStatus;
     [ClientName.ACCESSORY]: ClientStatus;
   };
 
   @CreateDateColumn()
+  @ApiProperty()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @ApiProperty()
   updatedAt: Date;
 }
