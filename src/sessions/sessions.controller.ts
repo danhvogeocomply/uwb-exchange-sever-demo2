@@ -13,8 +13,14 @@ import {
   CreateSessionResponseDto,
 } from './dto/create-session.dto';
 import { UpdateSessionDto } from './dto/update-session.dto';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiFoundResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ClientName } from './entities/session.entity';
+import { FindSessionByIdDto } from './dto/find-session-by-id.dto';
 
 @ApiTags('sessions')
 @Controller('sessions')
@@ -41,7 +47,8 @@ export class SessionsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @ApiFoundResponse({ type: FindSessionByIdDto })
+  async findOne(@Param('id') id: string): Promise<FindSessionByIdDto> {
     const session = await this.sessionsService.findOne(+id);
     const { accessory, ...rest } = session;
 

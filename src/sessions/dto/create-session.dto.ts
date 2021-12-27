@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsString } from 'class-validator';
-import { ClientName, ClientStatus } from '../entities/session.entity';
+import { SessionStatusDto } from '../entities/session.entity';
 
 export class CreateSessionDto {
   @ApiProperty({ example: 1 })
@@ -16,12 +16,6 @@ export class CreateSessionDto {
   phoneName: string;
 }
 
-export class SessionStatusDto {
-  @ApiProperty()
-  [ClientName.ACCESSORY]: ClientStatus;
-  @ApiProperty()
-  [ClientName.MOBILE]: ClientStatus;
-}
 export class CreateSessionResponseDto {
   @ApiProperty()
   id: number;

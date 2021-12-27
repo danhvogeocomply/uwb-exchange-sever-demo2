@@ -10,7 +10,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { SessionStatusDto } from '../dto/create-session.dto';
 
 export enum ClientStatus {
   INITIAL = 'initial',
@@ -22,6 +21,13 @@ export enum ClientStatus {
 export enum ClientName {
   MOBILE = 'mobile',
   ACCESSORY = 'accessory',
+}
+
+export class SessionStatusDto {
+  @ApiProperty()
+  [ClientName.ACCESSORY]: ClientStatus;
+  @ApiProperty()
+  [ClientName.MOBILE]: ClientStatus;
 }
 
 @Entity()
