@@ -46,23 +46,23 @@ export class SessionsService {
     const session = await this.sessionsRepository.findOne(id, {
       relations: ['accessory'],
     });
+    if (!session) {
+      throw new NotFoundException(`Session not found with id = ${id}`);
+    }
     return session;
   }
 
   async update(id: number, updateSessionDto: UpdateSessionDto) {
     const record = await this.findOne(id);
-    if (!record) {
-      throw new NotFoundException(`Session not found with id = ${id}`);
-    }
     const { status: oldStatus } = record;
-    const { status, ...data } = updateSessionDto;
-    await this.sessionsRepository.update(id, {
-      ...data,
+    const { from, status } = updateSessionDto;
+    const data = {
       status: {
         ...oldStatus,
-        ...status,
+        [from]: status,
       },
-    });
+    };
+    await this.sessionsRepository.update(id, data);
   }
 
   async remove(id: number) {

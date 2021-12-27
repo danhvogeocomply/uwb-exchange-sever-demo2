@@ -3,9 +3,9 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { SessionsService } from './sessions.service';
 import { CreateSessionDto } from './dto/create-session.dto';
@@ -30,7 +30,7 @@ export class SessionsController {
     };
   }
 
-  @Patch(':id')
+  @Put(':id')
   async update(
     @Param('id') id: string,
     @Body() updateSessionDto: UpdateSessionDto,
@@ -42,9 +42,15 @@ export class SessionsController {
     };
   }
 
+  @Delete()
+  async removeAll() {
+    await this.sessionsService.removeAll();
+    return { msg: `all sessions deleted` };
+  }
+
   @Delete(':id')
-  remove(@Param('id') id?: string) {
-    if (id) return this.sessionsService.remove(+id);
-    return this.sessionsService.removeAll();
+  async remove(@Param('id') id: string) {
+    await this.sessionsService.remove(+id);
+    return { msg: `session deleted with id = ${id}` };
   }
 }

@@ -32,9 +32,7 @@ export class Session {
   @Column()
   phoneName: string;
 
-  @ManyToOne(() => Accessory, {
-    primary: true,
-  })
+  @ManyToOne(() => Accessory)
   @JoinColumn()
   accessory: Accessory;
 

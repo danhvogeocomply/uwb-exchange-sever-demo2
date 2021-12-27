@@ -10,11 +10,11 @@ export function createClientProvider(): Provider {
       const client = connect(options);
 
       client.on('connect', () => {
-        logger.log('MQTT connected');
+        logger.debug('MQTT connected');
       });
 
       client.on('disconnect', () => {
-        logger.log('MQTT disconnected');
+        logger.warn('MQTT disconnected');
       });
 
       client.on('error', (error) => {
@@ -22,15 +22,15 @@ export function createClientProvider(): Provider {
       });
 
       client.on('reconnect', () => {
-        logger.log('MQTT reconnecting');
+        logger.debug('MQTT reconnecting');
       });
 
       client.on('close', () => {
-        logger.log('MQTT closed');
+        logger.debug('MQTT closed');
       });
 
       client.on('offline', () => {
-        logger.log('MQTT offline');
+        logger.warn('MQTT offline');
       });
 
       return client;
