@@ -1,19 +1,18 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <img src="https://user-images.githubusercontent.com/90378572/147431930-3ec0751d-f17e-4b1d-aa09-45b5cf84bbe6.png" width="320" alt="Exchange server - PinPoint" />
 </p>
 
-<p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+<p align="center">This server is used to exchange the ACD and ASCD among the iOS devices and UWB Modules (AKA Accessories).</p>
 <p align="center">
     <a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
     <a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-    <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
 </p>
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-This server is used to exchange the ACD and ASCD among the iOS devices and UWB Modules (AKA Accessories). 
+This is the second demo of UWB that shows the flow of the UWB application. We target to showcase the many-to-many connectivities among the iOS devices and UWB anchors through an exchange server. Also, we want to evaluation the Pub-Sub server to push notifications to embedded accessories. In this demo, the hardware is still MK Kit, not PinPoint hardware. 
 
 ## Installation
 
